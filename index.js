@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { View, ScrollView, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Dimensions, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import tinycolor from 'tinycolor2';
 
 import PageData from './components/PageData';
@@ -11,11 +11,11 @@ export default class Onboarding extends Component {
     super();
 
     this.state = {
-      currentPage: 0,
+      currentPage: 0
     };
   }
 
-  updatePosition = (event) => {
+  updatePosition = event => {
     const { contentOffset, layoutMeasurement } = event.nativeEvent;
     const pageFraction = contentOffset.x / layoutMeasurement.width;
     const page = Math.round(pageFraction);
@@ -32,12 +32,8 @@ export default class Onboarding extends Component {
     const { currentPage } = this.state;
     const nextPage = currentPage + 1;
     const offsetX = nextPage * width;
-    this.refs.scroll.scrollTo({
-      x: offsetX,
-      animated: true
-    }, () => {
-      this.setState({ currentPage: nextPage });
-    });
+    this.refs.scroll.scrollTo({ x: offsetX, animated: true });
+    this.setState({ currentPage: nextPage });
   };
 
   render() {
@@ -48,24 +44,28 @@ export default class Onboarding extends Component {
     const isLight = tinycolor(backgroundColor).getBrightness() > 180;
 
     return (
-      <View style={{ flex: 1, backgroundColor: backgroundColor, justifyContent: 'center' }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor,
+          justifyContent: 'center'
+        }}
+      >
         <ScrollView
           ref="scroll"
-          pagingEnabled={true}
-          horizontal={true}
+          pagingEnabled
+          horizontal
           showsHorizontalScrollIndicator={false}
           onScroll={this.updatePosition}
           scrollEventThrottle={100}
         >
-          {pages.map(({ image, title, subtitle, titleStyles, subtitleStyles }, idx) => (
+          {pages.map(({ image, title, subtitle }, idx) => (
             <PageData
               key={idx}
               isLight={isLight}
               image={image}
               title={title}
               subtitle={subtitle}
-              titleStyles={titleStyles}
-              subtitleStyles={subtitleStyles}
               width={width}
               height={height}
             />
@@ -88,21 +88,23 @@ export default class Onboarding extends Component {
 }
 
 Onboarding.propTypes = {
-  pages: PropTypes.arrayOf(PropTypes.shape({
-    backgroundColor: PropTypes.string.isRequired,
-    image: PropTypes.element.isRequired,
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
-  })).isRequired,
+  pages: PropTypes.arrayOf(
+    PropTypes.shape({
+      backgroundColor: PropTypes.string.isRequired,
+      image: PropTypes.element.isRequired,
+      title: PropTypes.string.isRequired,
+      subtitle: PropTypes.string.isRequired
+    })
+  ).isRequired,
   bottomOverlay: PropTypes.bool,
   showSkip: PropTypes.bool,
   showNext: PropTypes.bool,
-  showDone: PropTypes.bool,
+  showDone: PropTypes.bool
 };
 
 Onboarding.defaultProps = {
   bottomOverlay: true,
   showSkip: true,
   showNext: true,
-  showDone: true,
+  showDone: true
 };

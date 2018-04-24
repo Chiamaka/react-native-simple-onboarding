@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/goshakkk/react-native-simple-onboarding#readme",
   "dependencies": {
+    "prop-types": "^15.6.1",
     "tinycolor2": "^1.4.1"
   }
 }
